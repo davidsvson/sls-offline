@@ -1,0 +1,38 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: davidzocom
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: test
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  profile: david-zocom
+  region: eu-north-1
+  iam:
+    role: arn:aws:iam::116525801356:role/lectures-cloud
+  
+
+plugins:
+#  - serverless-webpack
+  - serverless-offline
+
+package:
+  individually: true
+
+build:
+  esbuild: false
+
+functions:
+  encrypt:
+    handler: functions/encrypt/index.handler
+    events:
+      - httpApi:
+          path: '/encrypt'
+          method: POST  
+  decrypt:
+    handler: functions/decrypt/index.handler
+    events:
+      - httpApi:
+          path: '/decrypt'
+          method: POST  
+  
